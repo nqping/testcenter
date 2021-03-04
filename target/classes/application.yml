@@ -1,0 +1,46 @@
+########## 开发环境#############
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/testcenter?useUnicode=true&characterEncoding=UTF-8&useAffectedRows=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+#  profiles:
+#    active: dev
+  thymeleaf:
+    cache: false  #开发时关闭缓存,不然没法看到实时页面
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
+    content-type: text/html
+  resources:
+    chain:
+      cache: false
+    cache-period: 604800
+mybatis:
+    type-aliases-package: com.niu.web.model #实体类的包
+    mapper-locations: classpath:/mapper/*.xml #Mapper的xml文件
+#分页
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+server:
+  port: 8089
+  session:
+    timeout: 86400
+    cookie:
+      max-age: 86400
+  tomcat:
+    uri-encoding: utf-8
+    max-threads: 0
+  context-path: /testcenter
+
+client:
+  cookie:
+    max-age: 604800
+  #日志配置
+#logging:
+#  config: classpath:log4j.properties

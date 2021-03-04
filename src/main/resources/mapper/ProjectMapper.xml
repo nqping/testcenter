@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niu.mapper.ProjectMapper">
+    <resultMap id="BaseResultMap" type="com.niu.entity.Project">
+        <id column="pro_id" property="projectId" jdbcType="INTEGER" />
+        <result column="pro_name" property="projectName" jdbcType="VARCHAR" />
+        <result column="leader" property="leader" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="version" property="version" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.niu.entity.Project">
+        INSERT INTO tc_project (pro_name,leader,update_time,status,version,creator,remark)
+        VALUES (#{projectName},#{leader},#{updateTime},#{status},#{version},#{creator},#{remark})
+    </insert>
+    <select id="getList" parameterType="map" resultMap="BaseResultMap">
+        SELECT * FROM tc_project WHERE 1=1
+         <if test="projectName != null and projectName !=''">
+             AND pro_name = #{projectName}
+         </if>
+        ORDER  BY  pro_id ASC LIMIT #{startRecord}, #{pageSize}
+    </select>
+    <select id="getCount" resultType="int" parameterType="map">
+       SELECT COUNT(*) FROM tc_project WHERE 1=1
+       <if test="domainName != null and domainName !=''">
+           AND pro_name = #{projectName}
+       </if>
+    </select>
+
+    <update id="updateByPrimaryKey" parameterType="com.niu.entity.Project">
+        UPDATE tc_project
+        <set>
+            <if test="leader != null and leader !=''">leader = #{leader},</if>
+            <if test="status != null and status!=''">status=#{status},</if>
+            <if test="projectName != null and projectName !=''">pro_name = #{projectName},</if>
+            <if test="updateTime !=null" >upadte_time = #{updateTime}</if>
+        </set>
+        WHERE pro_id=#{projectId}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM tc_project WHERE pro_id = #{projectId}
+    </delete>
+    <select id="getAllprojectName" resultMap="BaseResultMap">
+        SELECT pro_id,pro_name from tc_project;
+    </select>
+
+    <select id="isExistsProject" resultMap="BaseResultMap">
+        SELECT * from tc_project where pro_name=#{projectName,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

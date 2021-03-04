@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.niu.mapper.InterfaceMapper">
+    <resultMap id="BaseResultMap" type="com.niu.entity.Interface">
+        <id column="interface_id" property="interfaceId" jdbcType="INTEGER" />
+        <result column="interface_name" property="interfaceName" jdbcType="VARCHAR" />
+        <result column="interface_domain" property="domainName" jdbcType="VARCHAR"/>
+        <result column="interface_address" property="interfaceAddress" jdbcType="VARCHAR" />
+        <result column="createTime" property="updateTime"/>
+        <result column="useCaseCount" property="useCaseCount" jdbcType="INTEGER" />
+        <result column="requestType" property="requestType" jdbcType="VARCHAR"/>
+        <result column="dataType" property="dataType" jdbcType="VARCHAR"/>
+        <result column="pro_name" property="projectName" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <insert id="insert" parameterType="com.niu.entity.Interface">
+        INSERT INTO tc_interface (interface_name,interface_domain,interface_address,requestType,dataType,pro_name,createTime,useCaseCount)
+        VALUES (#{interfaceName},#{domainName},#{interfaceAddress},#{requestType},#{dataType},#{projectName},#{updateTime},#{useCaseCount})
+    </insert>
+    <select id="findInterfaceList" parameterType="map" resultMap="BaseResultMap">
+        SELECT * FROM tc_interface WHERE 1=1
+         <if test="domainName != null and domainName !=''">
+             AND interface_domain = #{domainName}
+         </if>
+        <if test="projectName !=null and projectName !=''">
+            AND  pro_name = #{projectName}
+        </if>
+        ORDER  BY  interface_id ASC LIMIT #{startRecord}, #{pageSize}
+    </select>
+    <select id="getCount" resultType="int" parameterType="map">
+       SELECT COUNT(*) FROM tc_interface WHERE 1=1
+       <if test="domainName != null and domainName !=''">
+           AND interface_domain = #{domainName}
+       </if>
+    </select>
+
+    <update id="updateByPrimaryKey" parameterType="com.niu.entity.Interface">
+        UPDATE tc_interface
+        <set>
+            <if test="domainName != null and domainName !=''">interface_domain = #{domainName},</if>
+            <if test="interfaceName != null and interfaceName!=''">interface_name=#{interfaceName},</if>
+            <if test="interfaceAddress != null and interfaceAddress !=''">interface_address = #{interfaceAddress},</if>
+            <if test="updateTime !=null" >createTime = #{updateTime}</if>
+        </set>
+        WHERE interface_id=#{interfaceId}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        DELETE FROM tc_interface WHERE interface_id = #{interfaceId}
+    </delete>
+
+</mapper>

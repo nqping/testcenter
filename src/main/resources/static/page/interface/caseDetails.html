@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>管理中心</title>
+    <!-- bootstrap & fontawesome -->
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/chosen.min.css" />
+
+    <link rel="stylesheet" href="../../css/bootstrapValidator.min.css" />
+    <link rel="stylesheet" href="../../font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/jquery-ui.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../../css/ui.jqgrid.min.css" />
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="../../css/fonts.googleapis.com.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="../../css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+    <!--<link rel="stylesheet" href="../../css/ace-skins.min.css" />-->
+    <!--<link rel="stylesheet" href="../../css/ace-rtl.min.css" />-->
+
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="../../js/jquery/jquery-3.2.1.min.js"></script>
+    <script src="../../js/jquery/chosen.jquery.min.js" type="text/javascript"></script>
+    <script src="../../js/jquery/bootstrapValidator.min.js" type="text/javascript"></script>
+    <script src="../../js/jquery/jquery-ui.min.js"></script>
+    <script src="../../js/jquery/bootstrap.min.js"></script>
+    <script src="../../js/jquery/bootstrap-datetimepicker.min.js"></script>
+    <script src="../../js/jquery/bootstrap-datetimepicker.zh-CN.js"></script>
+
+    <script src="../../js/jquery/jquery.jqGrid.min.js"></script>
+    <script src="../../js/jquery/grid.locale-cn.js"></script>
+
+    <!-- ace scripts -->
+    <script src="../../js/jquery/ace-extra.min.js" type="text/javascript"></script>
+
+    <script src="../../js/jquery/jquery.json-2.5.1.min.js" type="text/javascript"></script>
+
+    <script src="../../js/jquery/jquery.form.min.js" type="text/javascript"></script>
+    <script src="../../js/jquery/bootbox.js" type="text/javascript"></script>
+    <script src="../../js/common/config.js" type="text/javascript"></script>
+    <script src="../../js/common/util.js" type="text/javascript"></script>
+    <script src="../../js/interface/caseDetails.js" type="text/javascript"></script>
+
+
+</head>
+
+<body class="no-skin">
+<script type="text/javascript">
+    $(function(){
+        $.get("../../page/include/header.html",function(data){
+            $("#navbar").html(data);
+        });
+    });
+</script>
+<div id="navbar" class="navbar navbar-default ace-save-state"></div>
+
+<div class="main-container ace-save-state" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.loadState('main-container')}catch(e){}
+    </script>
+
+    <script>
+        $(function(){
+            $.get("../../page/include/sidebar.html",function(data){
+                $("#sidebar").html(data);
+                $("#interfaceLi").addClass("active open");
+                $("#projectLi").addClass("active");
+            });
+        });
+    </script>
+    <div id="sidebar" class="sidebar responsive ace-save-state"></div>
+
+    <div class="main-content">
+        <div class="main-content-inner">
+            <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="ace-icon fa fa-home home-icon"></i>
+                        <a href="#">首页</a>
+                    </li>
+                    <li class="active">项目管理</li>
+                </ul><!-- /.breadcrumb -->
+            </div>
+
+            <div class="page-content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <div class="space-6"></div>
+                        </div>
+                        <div class="row">
+                            <div class="space-6"></div>
+                            <table id="caseDetailTable"></table>
+                            <div id="caseDetailPaper"></div>
+                        </div><!-- /.row -->
+                        <!-- PAGE CONTENT ENDS -->
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.page-content -->
+        </div>
+    </div><!-- /.main-content -->
+
+    <script type="text/javascript">
+        $(function(){
+            $.get("../../page/include/footer.html",function(data){
+                $(".footer").html(data);
+            });
+        });
+    </script>
+    <div class="footer"></div>
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+    </a>
+</div><!-- /.main-container -->
+
+<!-- 表格工具栏-->
+<div id="grid-table-toolbar" class="container-fluid">
+    <form class="form-inline" onsubmit="return false;">
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label class="control-label">归属项目：</label>
+                <label class="control-label" id="projectNameTemp"></label>
+            </div>
+            <div class="form-group col-md-3">
+                <button type="button" class="btn btn-sm btn-success btn-info btn-round" id="toolbar-add" onclick="showAddPanl()">
+                    <i class="ace-icon fa fa-plus bigger-120"></i>
+                    添加接口
+                </button>
+                <button type="button" class="btn btn-sm btn-warning btn-info btn-round" onclick="showAddPanl()">
+                    <i class="ace-icon fa fa-reply bigger-120"></i>
+                    返回
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>
+<!-- /.-- table toolbar-->
+
+<!--添加项目-->
+<div id="addProjectModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h5 class="modal-title" id="myModalLabel">添加项目</h5>
+            </div>
+            <form id="projectForm" class="form-horizontal" role="form" method="post" >
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">名称<span style="color: red;">*</span> :</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="projectName" name="projectName" placeholder="项目名称" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right" for="status">状态<span style="color: red;">*</span> :</label>
+                        <div class="col-sm-7">
+                            <select id="status" name="status" class="form-control">
+                                <option value="正常" checked="true">正常</option>
+                                <option value="暂停">暂停</option>
+                                <option value="终止">终止</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">负责人<span style="color: red;">*</span> :</label>
+                        <div class="col-sm-7">
+                            <select id="leader" name="leader" class="form-control" data-placeholder="请选择" multiple></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right" for="remark">说明</label>
+                        <div class="col-sm-7">
+                            <textarea id="remark" name="remark" rows="2"  class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button  type="submit" id="submitBtn" class="btn btn-white btn-warning btn-round" >
+                        <i class="ace-icon fa fa-trash-o bigger-120 orange"></i>
+                        提交
+                    </button>
+                    <button class="btn btn-white btn-default btn-round" data-dismiss="modal">
+                        <i class="ace-icon fa fa-times red2"></i>
+                        关闭
+                    </button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript" src="../../js/jquery/ace.min.js"></script>
+</body>
+</html>
